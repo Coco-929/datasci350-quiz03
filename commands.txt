@@ -65,3 +65,57 @@ I don't have real-time weather data, sports fans! I don't have the ability to pr
 ollama run commentator "What is the weather in Atlanta right now?"
 I don't know the current weather in Atlanta, sports fans! I don't have live weather data.
 the model admitted it did not know in 3 out of 3 runs
+
+
+
+cat ollama/ask_local.py
+python3 ollama/ask_local.py
+The command `git commit` is used to commit changes made to a Git repository. It creates a commit message and adds the changes to the Git history.
+CompletionUsage(completion_tokens=32, prompt_tokens=36, total_tokens=68, completion_tokens_details=None, prompt_tokens_details=PromptTokensDetails(audio_tokens=None, cache_write_tokens=None, cached_tokens=0, image_tokens=None, text_tokens=None))
+
+nano ollama/ask_local.py
+from openai import OpenAI
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+response = client.chat.completions.create(
+    model="commentator",
+    messages=[{"role": "user", "content": "What does git commit do?"}],
+    temperature=0,
+)
+print(response.choices[0].message.content)
+print(response.usage)
+
+python3 ollama/ask_local.py
+I don't know what git commit does, sports fans! I don't have information on this topic.
+CompletionUsage(completion_tokens=22, prompt_tokens=102, total_tokens=124, completion_tokens_details=None, prompt_tokens_details=PromptTokensDetails(audio_tokens=None, cache_write_tokens=None, cached_tokens=0, image_tokens=None, text_tokens=None))
+The custom model adds its system instructions and message example to the input, so it processes more prompt tokens for the same question.
+
+cat ollama/ask_json.py
+python3 ollama/ask_json.py
+(base) cocozhang@Cocos-MacBook-Pro datasci350-quiz03 % python3 ollama/ask_json.py
+{
+  "answer": "I don't know what git commit does,
+length
+Traceback (most recent call last):
+  File "/Users/cocozhang/Desktop/datasci350-quiz03/ollama/ask_json.py", line 18, in <module>
+    print(json.loads(reply)["answer"])
+          ~~~~~~~~~~^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/anaconda3/lib/python3.13/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/json/decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+json.decoder.JSONDecodeError: Unterminated string starting at: line 2 column 13 (char 14)
+(base) cocozhang@Cocos-MacBook-Pro datasci350-quiz03 % 
+The code limit token to be 15 which cannot finish the response. 
+python3 ollama/ask_json.py
+{
+  "answer": "I don't know what git commit does, sports fans!",
+  "confidence": 0.8
+}
+stop
+I don't know what git commit does, sports fans!
+

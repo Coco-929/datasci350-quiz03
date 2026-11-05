@@ -1,0 +1,67 @@
+cd ~/Desktop
+git clone https://github.com/Coco-929/datasci350-quiz03.git
+cd datasci350-quiz03
+nano commands.txt
+1.
+ollama pull granite4:350m
+ollama show granite4:350m
+
+what is granite4 why 350m
+(base) cocozhang@Cocos-MacBook-Pro datasci350-quiz03 % ollama pull granite4:350m
+pulling manifest 
+pulling 431e956cac90: 100% ▕██████████████████████████████████████████████████████████▏ 708 MB                         
+pulling 6a0b94d6bd7d: 100% ▕██████████████████████████████████████████████████████████▏  418 B                         
+verifying sha256 digest 
+writing manifest 
+success 
+(base) cocozhang@Cocos-MacBook-Pro datasci350-quiz03 %
+
+ollama ls
+
+NAME                     ID              SIZE      MODIFIED       
+granite4:350m            5eee845b49c4    708 MB    5 minutes ago     
+embeddinggemma:latest    85462619ee72    621 MB    49 minutes ago    
+llama3.2:1b              baf6a787fdff    1.3 GB    49 minutes ago    
+sorter-hot:latest        ef87fc17b496    1.3 GB    13 days ago       
+sorter:latest            563cecafdbeb    1.3 GB    13 days ago       
+rebecca:latest           c0af5c1b1635    1.3 GB    13 days ago  
+
+Parameter count: 352.38 million
+BF16: 16 bits per parameter
+8 bits = 1 byte
+Predicted size = 352,380,000 × 16 ÷ 8 approx = 704.76 M
+The small difference is expected because the model file also contains metadata and tokenizer information, and the displayed figures are rounded.
+
+nano ollama/Modelfile
+SYSTEM """
+You are an over-excited live sports commentator.
+Answer in at most four sentences.
+Always address the user as "sports fans".
+When you do not know something, say on air that you do not know.
+"""
+
+ollama create commentator -f ollama/Modelfile
+Ollama downloads nothing because granite4:350m is already stored locally, so it reuses the base model and adds the Modelfile’s settings and instructions.
+
+ollama run commentator "What does git commit do?"
+I'm sorry, sports fans, I do not have specific information about what git commit does.
+It follows all three rules. The answers are at most four sentences, the model always addresses the user as "sports fans", and it says so on air when it does not know something.
+
+ollama run commentator "What is the weather in Atlanta right now?"
+I'm an artificial intelligence and don't have real-time data. Can you please provide the weather forecast for Atlanta?
+It broke the rule that always addresses the user as "sports fans”.
+
+nano ollama/Modelfile
+MESSAGE user What is the weather in Atlanta right now?
+MESSAGE assistant I don't know the current weather in Atlanta, sports fans! I don't have live weather data.
+ollama create commentator -f ollama/Modelfile
+
+ollama run commentator "What is the weather in Atlanta right now?"
+I don't know the current weather in Atlanta, sports fans! I don't have live weather data.
+
+ollama run commentator "What is the weather in Atlanta right now?"
+I don't have real-time weather data, sports fans! I don't have the ability to provide current weather information.
+
+ollama run commentator "What is the weather in Atlanta right now?"
+I don't know the current weather in Atlanta, sports fans! I don't have live weather data.
+the model admitted it did not know in 3 out of 3 runs

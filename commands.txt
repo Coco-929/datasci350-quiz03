@@ -1,3 +1,10 @@
+AI Note: AI: I used ChatGPT/Codex for tasks 1–15, including command explanations, debugging, and Git/AWS guidance.
+
+Example prompt: “explain the difference between > and >>”
+
+I ran all quiz commands and edited the files myself. No AI agent executed quiz commands or operated my AWS account.
+
+
 cd ~/Desktop
 git clone https://github.com/Coco-929/datasci350-quiz03.git
 cd datasci350-quiz03
@@ -119,3 +126,29 @@ python3 ollama/ask_json.py
 stop
 I don't know what git commit does, sports fans!
 
+chmod 400 /Users/cocozhang/Downloads/datasci350-quiz03.pem
+
+ssh -i /Users/cocozhang/Downloads/datasci350-quiz03.pem ubuntu@ec2-18-118-112-241.us-east-2.compute.amazonaws.com
+
+
+ubuntu@ip-172-31-24-1:~$ 
+
+sudo apt update 
+sudo apt install -y python3-pandas python3-matplotlib python3-seaborn
+
+
+cd /Users/cocozhang/Desktop/datasci350-quiz03
+scp -i /Users/cocozhang/Downloads/datasci350-quiz03.pem aws/traffic_analysis.py aws/website_traffic.txt ubuntu@ec2-18-118-112-241.us-east-2.compute.amazonaws.com:~/
+
+python3 traffic_analysis.py > results.txt
+cat /var/lib/cloud/data/instance-id >> results.txt
+sha256sum results.txt > fingerprint.txt
+
+scp -i /Users/cocozhang/Downloads/datasci350-quiz03.pem ubuntu@ec2-18-118-112-241.us-east-2.compute.amazonaws.com:~/results.txt aws/
+
+scp -i /Users/cocozhang/Downloads/datasci350-quiz03.pem ubuntu@ec2-18-118-112-241.us-east-2.compute.amazonaws.com:~/fingerprint.txt aws/
+
+scp -i /Users/cocozhang/Downloads/datasci350-quiz03.pem ubuntu@ec2-18-118-112-241.us-east-2.compute.amazonaws.com:~/traffic_analysis.png aws/
+
+
+When an instance is stopped, the compute charges stop, but its retained EBS storage is still charging.
